@@ -1,14 +1,17 @@
 <?php
 
-class ExpenseManager {
+class ExpenseManager
+{
 
     private $storage;
 
-    public function __construct(ExpenseStorage $storage) {
+    public function __construct(ExpenseStorage $storage)
+    {
         $this->storage = $storage;
     }
 
-    public function addExpense(string $description, float $amount) {
+    public function addExpense(string $description, float $amount): void
+    {
         $expenses = $this->storage->load();
 
         $expenses[] = [
@@ -22,9 +25,8 @@ class ExpenseManager {
         echo "Despesa adicionada com suceso. \n";
     }
 
-
-    
-    public function listExpense(): void {
+    public function listExpense(): void
+    {
         $expenses = $this->storage->load();
 
         echo "# ID | Data          | Descrição  | Valor \n";
@@ -32,19 +34,19 @@ class ExpenseManager {
         foreach ($expenses as $expense) {
             echo "# {$expense['id']} | {$expense['date']} | {$expense['description']} | \${$expense['id']} \n";
         }
-        
-
     }
 
-    public function deleteExpense($id){
-       $expenses = $this->storage->load();
-       $filtered = array_filter($expenses, fn($expense) => $expense['id'] !== $id);
+    public function deleteExpense($id): void
+    {
+        $expenses = $this->storage->load();
+        $filtered = array_filter($expenses, fn($expense) => $expense['id'] !== $id);
 
-       $this->storage->save(array_values($filtered));
-       echo "Depesa removida com sucesso \n";
+        $this->storage->save(array_values($filtered));
+        echo "Depesa removida com sucesso \n";
     }
 
-    public function summary(?int $month = null) : void {
+    public function summary(?int $month = null): void
+    {
         $expenses = $this->storage->load();
         $total = 0;
         $flagDatesMonths = 'n';
@@ -52,16 +54,11 @@ class ExpenseManager {
         foreach ($expenses as $expense) {
             // esse n no date é uma flag para indicar os meses de 1 a 12
             $expenseMonth = (int)date($flagDatesMonths, strtotime($expense['date']));
-            if (is_null($month) || $expenseMonth === $month ) {
+            if (is_null($month) || $expenseMonth === $month) {
                 $total += $expense['amount'];
             }
         }
 
-    echo 'Total de despesas'. ($month ? " para o mês $month" : "") . ": \$$total\n";
-
+        echo 'Total de despesas' . ($month ? " para o mês $month" : "") . ": \$$total\n";
     }
-
-
 }
-
-?>
