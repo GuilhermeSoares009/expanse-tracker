@@ -3,16 +3,16 @@
 class ExpenseManager
 {
 
-    private $storage;
+    private $expenseStorage;
 
-    public function __construct(ExpenseStorage $storage)
+    public function __construct(ExpenseStorage $expenseStorage)
     {
-        $this->storage = $storage;
+        $this->expenseStorage = $expenseStorage;
     }
 
     public function addExpense(string $description, float $amount): void
     {
-        $expenses = $this->storage->load();
+        $expenses = $this->expenseStorage->load();
 
         $expenses[] = [
             'id' => uniqid(),
@@ -21,13 +21,13 @@ class ExpenseManager
             'amount' => $amount
         ];
 
-        $this->storage->save($expenses);
+        $this->expenseStorage->save($expenses);
         echo "Despesa adicionada com suceso. \n";
     }
 
     public function listExpense(): void
     {
-        $expenses = $this->storage->load();
+        $expenses = $this->expenseStorage->load();
 
         echo "# ID | Data          | Descrição  | Valor \n";
 
@@ -38,16 +38,18 @@ class ExpenseManager
 
     public function deleteExpense($id): void
     {
-        $expenses = $this->storage->load();
+        $expenses = $this->expenseStorage->load();
+        // Neste trecho se pegam todos gastos menos o que passei para ser evitado
         $filtered = array_filter($expenses, fn($expense) => $expense['id'] !== $id);
 
-        $this->storage->save(array_values($filtered));
+        // salvo todos os gastos filtrados e excluo o que estava fora do filtro
+        $this->expenseStorage->save(array_values($filtered));
         echo "Depesa removida com sucesso \n";
     }
 
     public function summary(?int $month = null): void
     {
-        $expenses = $this->storage->load();
+        $expenses = $this->expenseStorage->load();
         $total = 0;
         $flagDatesMonths = 'n';
 
