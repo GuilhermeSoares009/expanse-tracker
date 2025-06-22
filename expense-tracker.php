@@ -15,14 +15,17 @@ $manager = new ExpenseManager($storage);
 
 switch ($command) {
     case 'add':
+        handleAdd($argv, $manager);
         break;
     case 'list':
+        $manager->listExpense();
         break;
     case 'summary':
+        handleSummary($argv, $manager);
         break;
     case 'delete':
+        handleDelete($argv, $manager);
         break;
-    
     default:
         echo "Comando inválido. Use: add, list, summary, delete. \n";
         break;
