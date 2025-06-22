@@ -13,9 +13,14 @@ class ExpenseStorage {
 
     public function load() : array {
         $content = file_get_contents($this->file);
-        return json_decode($content, true);
+        $data = json_decode($content, true);
+
+        return   is_array($data) ? $data : [];
     }
 
+    /**
+     * Salvamos no arquivo expenses.json os dados id, date, description e amonunt
+     */
     public function save(array $data) : void {
         file_put_contents($this->file, json_encode($data, JSON_PRETTY_PRINT));
     }

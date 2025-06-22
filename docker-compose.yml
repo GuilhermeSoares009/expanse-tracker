@@ -1,0 +1,7 @@
+services:
+  expense-tracker:
+    build: .
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: ["php", "expense-tracker.php"]

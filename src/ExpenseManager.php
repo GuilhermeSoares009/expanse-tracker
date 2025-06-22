@@ -17,7 +17,7 @@ class ExpenseManager
         $expenses[] = [
             'id' => uniqid(),
             'date' => date('Y-m-d'),
-            'date' => $description,
+            'description' => $description,
             'amount' => $amount
         ];
 
@@ -32,7 +32,7 @@ class ExpenseManager
         echo "# ID | Data          | Descrição  | Valor \n";
 
         foreach ($expenses as $expense) {
-            echo "# {$expense['id']} | {$expense['date']} | {$expense['description']} | \${$expense['id']} \n";
+            echo "# {$expense['id']} | {$expense['date']} | {$expense['description']} | \${$expense['amount']} \n";
         }
     }
 
